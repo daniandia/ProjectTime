@@ -33,11 +33,21 @@ public class MovementController : MonoBehaviour {
 		Instantiate(bulletType, transform.position, transform.rotation );
 	}
 
-	// Recibo disparos
+	// Entro e triggers
+
 	void OnTriggerEnter(Collider other) {
 		//Debug.Log("COLLISION DETECTED ");
 		if (other.gameObject.tag == "BulletEnemy" ){
 			GameObject.FindGameObjectWithTag ("LevelController").GetComponent<LevelController>().Restart();
+		}
+		else if(other.gameObject.tag == "SliderDoor"){
+			other.GetComponent<SliderDoor>().PlayerEntered();
+		}
+	}
+
+	void OnTriggerExit(Collider other){
+		if(other.gameObject.tag == "SliderDoor"){
+			other.GetComponent<SliderDoor>().PlayerExit();
 		}
 	}
 }
