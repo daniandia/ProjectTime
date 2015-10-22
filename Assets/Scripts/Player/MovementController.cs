@@ -43,6 +43,9 @@ public class MovementController : MonoBehaviour {
 		else if(other.gameObject.tag == "SliderDoor"){
 			other.GetComponent<SliderDoor>().PlayerEntered();
 		}
+		else if(other.gameObject.tag == "Teleport"){
+			other.GetComponent<Teleport>().TeleportTo();
+		}
 	}
 
 	void OnTriggerExit(Collider other){
