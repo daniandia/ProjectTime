@@ -6,12 +6,14 @@ public class LevelController : MonoBehaviour {
 
 	public GameObject map;
 	public GameObject enemies;
+	public GameObject pnjs;
 
 	public Vector3 spawnPoint;
 
 	public GameObject player;
 	// Use this for initialization
 	void Start () {
+<<<<<<< Updated upstream
 		//////////////////////
 		//PlayerPrefs.SetString("MAPNAME", "Test_1");
 		//PlayerPrefs.SetString("SPNAME", "1");
@@ -25,6 +27,12 @@ public class LevelController : MonoBehaviour {
 		}else{
 			StartCoroutine("LoadLevel");
 		}
+=======
+		LoadEnemies();
+		LoadPnjs();
+		LoadMap();
+		player.transform.position = spawnPoint;
+>>>>>>> Stashed changes
 	}
 
 
@@ -54,7 +62,13 @@ public class LevelController : MonoBehaviour {
 	}
 
 	void LoadEnemies(){
+		if(enemies)
 		Instantiate (enemies);
+	}
+
+	void LoadPnjs(){
+		if(pnjs)
+		Instantiate (pnjs);
 	}
 
 	void LoadMap(){
