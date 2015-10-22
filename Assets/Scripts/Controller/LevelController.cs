@@ -13,7 +13,6 @@ public class LevelController : MonoBehaviour {
 	public GameObject player;
 	// Use this for initialization
 	void Start () {
-<<<<<<< Updated upstream
 		//////////////////////
 		//PlayerPrefs.SetString("MAPNAME", "Test_1");
 		//PlayerPrefs.SetString("SPNAME", "1");
@@ -22,17 +21,12 @@ public class LevelController : MonoBehaviour {
 			CameraFade fader = Camera.main.gameObject.GetComponent<CameraFade>() as CameraFade;
 			LoadEnemies();
 			LoadMap();
+			LoadPnjs();
 			player.transform.position = spawnPoint;
 			//fader.FadeIn(1f);
 		}else{
 			StartCoroutine("LoadLevel");
 		}
-=======
-		LoadEnemies();
-		LoadPnjs();
-		LoadMap();
-		player.transform.position = spawnPoint;
->>>>>>> Stashed changes
 	}
 
 
@@ -48,17 +42,19 @@ public class LevelController : MonoBehaviour {
 		//yield return new WaitForSeconds(.2f);
 		map 	= Resources.Load("Levels/"+_levelName+"/MapMesh") as GameObject;
 		enemies = Resources.Load("Levels/"+_levelName+"/Enemies") as GameObject;
+		pnjs 	= Resources.Load("Levels/"+_levelName+"/PNJ") as GameObject;
 		print ("OBJS LOADED");
 		yield return new WaitForSeconds(.2f);
 		LoadMap();
 		LoadEnemies();
+		LoadPnjs();
 		player.transform.position = GameObject.Find("SP_"+_spawnPoint).transform.position;
 		yield return new WaitForSeconds(.2f);
 		print ("FADEING IN");
 		fader.FadeIn(1f);
 		
-		PlayerPrefs.SetString("MAPNAME","");
-		PlayerPrefs.SetString("SPNAME" ,"");
+		//PlayerPrefs.SetString("MAPNAME","");
+		//PlayerPrefs.SetString("SPNAME" ,"");
 	}
 
 	void LoadEnemies(){
@@ -72,6 +68,7 @@ public class LevelController : MonoBehaviour {
 	}
 
 	void LoadMap(){
+		if(map)
 		Instantiate (map);
 	}
 
@@ -84,6 +81,7 @@ public class LevelController : MonoBehaviour {
 		//enemies
 		Destroy (GameObject.FindGameObjectWithTag("EnemyPool"));
 		LoadEnemies();
+		string _spawnPoint = PlayerPrefs.GetString("SPNAME" );
 		player.transform.position = GameObject.Find("SP_"+_spawnPoint).transform.position;
 	}
 }
