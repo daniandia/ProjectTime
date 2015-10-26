@@ -1,13 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
+using LitJson;
 
-public class PlayerTalk : MonoBehaviour {
+public class pnjTalk : MonoBehaviour {
 
 	private bool printOnGUI;
 	private bool printText;
 	private Camera newCamera;
 	private Vector3 screenPos;
 	public Texture aButton;
+	public pnjData pnjDatos;
 
 	// Use this for initialization
 	void Start () {
@@ -15,6 +17,8 @@ public class PlayerTalk : MonoBehaviour {
 		printText = false;
 		newCamera = Camera.main;
 		screenPos = newCamera.WorldToScreenPoint(transform.position);
+		//if(pnjDatos)
+		//	Debug.Log (pnjDatos.dataFile.ToString ());
 	}
 	
 	// Update is called once per frame
@@ -46,11 +50,13 @@ public class PlayerTalk : MonoBehaviour {
 				return;
 			}
 			if(printText)
-				GUI.Box (new Rect (screenPos.x, Screen.height - screenPos.y - 100, 100, 100), "Oye, hijodeputa");
+				if(pnjDatos)
+					GUI.Box (new Rect (screenPos.x, Screen.height - screenPos.y - 100, 250, 100), pnjDatos.dataFile[pnjDatos.mission][0]["text"].ToString());
+				else
+					GUI.Box (new Rect (screenPos.x, Screen.height - screenPos.y - 100, 100, 100), "Oye, hijodeputa");
 			else
 				GUI.DrawTexture(new Rect(screenPos.x, Screen.height - screenPos.y - 100, 100, 100), aButton, ScaleMode.ScaleAndCrop, true, 0.0F);
 
 		}
-		
 	}
 }
