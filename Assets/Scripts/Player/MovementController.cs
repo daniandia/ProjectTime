@@ -18,8 +18,8 @@ public class MovementController : MonoBehaviour {
 	void SetMovement(){
 
 		CharacterController controller = GetComponent<CharacterController>();
-		transform.Rotate(0, Input.GetAxis("RightStick") * rotateSpeed, 0);
-		//mouse totation
+		if(!Input.GetKey(KeyCode.JoystickButton3) ) transform.Rotate(0, Input.GetAxis("RightStickHoriz") * rotateSpeed, 0);
+		//mouse rotation
 		transform.Rotate(0, Input.GetAxis("Mouse X") * rotateSpeed, 0);
 		Vector3 forward  = transform.TransformDirection(Vector3.forward);
 		Vector3 left	 = transform.TransformDirection(Vector3.right);
