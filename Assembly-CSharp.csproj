@@ -47,6 +47,7 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\Camera\CamController.cs" />
      <Compile Include="Assets\Scripts\Camera\CameraFade.cs" />
+     <Compile Include="Assets\Scripts\Controller\EnemyController.cs" />
      <Compile Include="Assets\Scripts\Controller\LevelController.cs" />
      <Compile Include="Assets\Scripts\Enemies\EnemyBasic.cs" />
      <Compile Include="Assets\Scripts\Enemies\PlayerChaser.cs" />
