@@ -10,9 +10,11 @@ public class pnjTalk : MonoBehaviour {
 	private Vector3 screenPos;
 	public Texture aButton;
 	public pnjData pnjDatos;
+	public int pnjNextText;
 
 	// Use this for initialization
 	void Start () {
+		//pnjNextText = pnjDatos.pnjNext;
 		printOnGUI = false;
 		printText = false;
 		newCamera = Camera.main;
@@ -24,8 +26,17 @@ public class pnjTalk : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		screenPos = newCamera.WorldToScreenPoint(transform.position);
-		if(printOnGUI && !printText && Input.GetButtonDown("Fire2"))
-		   printText=true;
+		if (printOnGUI && Input.GetButtonDown ("Fire2")) {
+			if (!printText)
+			{
+				printText = true;
+			}
+			else
+			{
+				pnjNextText = int.Parse(pnjDatos.dataFile[pnjDatos.mission][pnjDatos.pnjNext]["next"].ToString());
+				pnjDatos.pnjNext=pnjNextText;
+			}
+		}
 	}
 
 	void OnTriggerStay(Collider other) {
@@ -51,7 +62,10 @@ public class pnjTalk : MonoBehaviour {
 			}
 			if(printText)
 				if(pnjDatos)
-					GUI.Box (new Rect (screenPos.x, Screen.height - screenPos.y - 100, 250, 100), pnjDatos.dataFile[pnjDatos.mission][0]["text"].ToString());
+				{
+					GUI.Box (new Rect (screenPos.x, Screen.height - screenPos.y - 100, 250, 100), pnjDatos.dataFile[pnjDatos.mission][pnjDatos.pnjNext]["text"].ToString());
+
+				}
 				else
 					GUI.Box (new Rect (screenPos.x, Screen.height - screenPos.y - 100, 100, 100), "Oye, hijodeputa");
 			else

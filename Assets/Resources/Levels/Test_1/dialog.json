@@ -3,7 +3,14 @@
 		{
 			"id": 0,
 			"id_pnj": "mike",
-			"text": "oye, joputa, esto es un jSON madafaka!!!"
-		}		
+			"text": "oye, joputa, esto es un jSON madafaka!!!",
+			"next": 1
+		},
+		{
+			"id": 1,
+			"id_pnj": "mike",
+			"text": "otra linea de diálogo",
+			"next": 0
+		}
 	]
 }
