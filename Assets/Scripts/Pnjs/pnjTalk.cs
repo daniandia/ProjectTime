@@ -33,8 +33,38 @@ public class pnjTalk : MonoBehaviour {
 			}
 			else
 			{
-				pnjNextText = int.Parse(pnjDatos.dataFile[pnjDatos.mission][pnjDatos.pnjNext]["next"].ToString());
-				pnjDatos.pnjNext=pnjNextText;
+				if(int.Parse(pnjDatos.dataFile[pnjDatos.mission][pnjDatos.pnjNext]["triggers"]["next"].ToString())>=0)
+				{
+					pnjNextText = int.Parse(pnjDatos.dataFile[pnjDatos.mission][pnjDatos.pnjNext]["triggers"]["next"].ToString());
+					pnjDatos.pnjNext=pnjNextText;
+				}
+				else if(int.Parse(pnjDatos.dataFile[pnjDatos.mission][pnjDatos.pnjNext]["triggers"]["callback"].ToString())>=0)
+				{
+					Debug.Log("Callback");
+				}
+				else
+				{
+					if(int.Parse(pnjDatos.dataFile[pnjDatos.mission][pnjDatos.pnjNext]["triggers"]["answers"]["A"].ToString())>=0)
+					{				
+						pnjNextText = int.Parse(pnjDatos.dataFile[pnjDatos.mission][pnjDatos.pnjNext]["triggers"]["answers"]["A"].ToString());
+						pnjDatos.pnjNext=pnjNextText;
+					}
+					else if(int.Parse(pnjDatos.dataFile[pnjDatos.mission][pnjDatos.pnjNext]["triggers"]["answers"]["B"].ToString())>=0)
+					{
+						pnjNextText = int.Parse(pnjDatos.dataFile[pnjDatos.mission][pnjDatos.pnjNext]["triggers"]["answers"]["B"].ToString());
+						pnjDatos.pnjNext=pnjNextText;
+					}
+					else if(int.Parse(pnjDatos.dataFile[pnjDatos.mission][pnjDatos.pnjNext]["triggers"]["answers"]["X"].ToString())>=0)
+					{
+						pnjNextText = int.Parse(pnjDatos.dataFile[pnjDatos.mission][pnjDatos.pnjNext]["triggers"]["answers"]["X"].ToString());
+						pnjDatos.pnjNext=pnjNextText;
+					}
+					else if(int.Parse(pnjDatos.dataFile[pnjDatos.mission][pnjDatos.pnjNext]["triggers"]["answers"]["Y"].ToString())>=0)
+					{
+						pnjNextText = int.Parse(pnjDatos.dataFile[pnjDatos.mission][pnjDatos.pnjNext]["triggers"]["answers"]["Y"].ToString());
+						pnjDatos.pnjNext=pnjNextText;
+					}
+				}
 			}
 		}
 	}
