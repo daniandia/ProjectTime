@@ -60,6 +60,7 @@ public class LevelController : MonoBehaviour {
 	void LoadEnemies(){
 		if(enemies)
 		Instantiate (enemies);
+		GameObject.Find("EnemyController").GetComponent<EnemyController>().InitEnemyPool();
 	}
 
 	void LoadPnjs(){
