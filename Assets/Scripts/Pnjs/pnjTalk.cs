@@ -9,8 +9,10 @@ public class pnjTalk : MonoBehaviour {
 	private Camera newCamera;
 	private Vector3 screenPos;
 	public Texture aButton;
-	public pnjData pnjDatos;
+	public JsonData pnjDatos;
 	public int pnjNextText;
+	public string mission;
+	public GameObject MissionHelper_Aux;
 
 	// Use this for initialization
 	void Start () {
@@ -19,6 +21,11 @@ public class pnjTalk : MonoBehaviour {
 		printText = false;
 		newCamera = Camera.main;
 		screenPos = newCamera.WorldToScreenPoint(transform.position);
+		if (mission != "") {
+			Debug.Log("cargo");
+			MissionHelper_Aux = GameObject.Find ("MissionHelper");
+			pnjDatos = MissionHelper_Aux.GetComponent<LoadLevelDialog> ().dataFile;
+		}
 		//if(pnjDatos)
 		//	Debug.Log (pnjDatos.dataFile.ToString ());
 	}
@@ -33,36 +40,36 @@ public class pnjTalk : MonoBehaviour {
 			}
 			else
 			{
-				if(int.Parse(pnjDatos.dataFile[pnjDatos.mission][pnjDatos.pnjNext]["triggers"]["next"].ToString())>=0)
+				if(int.Parse(pnjDatos[mission][pnjNextText]["triggers"]["next"].ToString())>=0)
 				{
-					pnjNextText = int.Parse(pnjDatos.dataFile[pnjDatos.mission][pnjDatos.pnjNext]["triggers"]["next"].ToString());
-					pnjDatos.pnjNext=pnjNextText;
+					pnjNextText = int.Parse(pnjDatos[mission][pnjNextText]["triggers"]["next"].ToString());
+					//pnjDatos.pnjNext=pnjNextText;
 				}
-				else if(int.Parse(pnjDatos.dataFile[pnjDatos.mission][pnjDatos.pnjNext]["triggers"]["callback"].ToString())>=0)
+				else if(int.Parse(pnjDatos[mission][pnjNextText]["triggers"]["callback"].ToString())>=0)
 				{
 					Debug.Log("Callback");
 				}
 				else
 				{
-					if(int.Parse(pnjDatos.dataFile[pnjDatos.mission][pnjDatos.pnjNext]["triggers"]["answers"]["A"].ToString())>=0)
+					if(int.Parse(pnjDatos[mission][pnjNextText]["triggers"]["answers"]["A"].ToString())>=0)
 					{				
-						pnjNextText = int.Parse(pnjDatos.dataFile[pnjDatos.mission][pnjDatos.pnjNext]["triggers"]["answers"]["A"].ToString());
-						pnjDatos.pnjNext=pnjNextText;
+						pnjNextText = int.Parse(pnjDatos[mission][pnjNextText]["triggers"]["answers"]["A"].ToString());
+						//pnjDatos.pnjNext=pnjNextText;
 					}
-					else if(int.Parse(pnjDatos.dataFile[pnjDatos.mission][pnjDatos.pnjNext]["triggers"]["answers"]["B"].ToString())>=0)
+					else if(int.Parse(pnjDatos[mission][pnjNextText]["triggers"]["answers"]["B"].ToString())>=0)
 					{
-						pnjNextText = int.Parse(pnjDatos.dataFile[pnjDatos.mission][pnjDatos.pnjNext]["triggers"]["answers"]["B"].ToString());
-						pnjDatos.pnjNext=pnjNextText;
+						pnjNextText = int.Parse(pnjDatos[mission][pnjNextText]["triggers"]["answers"]["B"].ToString());
+						//pnjDatos.pnjNext=pnjNextText;
 					}
-					else if(int.Parse(pnjDatos.dataFile[pnjDatos.mission][pnjDatos.pnjNext]["triggers"]["answers"]["X"].ToString())>=0)
+					else if(int.Parse(pnjDatos[mission][pnjNextText]["triggers"]["answers"]["X"].ToString())>=0)
 					{
-						pnjNextText = int.Parse(pnjDatos.dataFile[pnjDatos.mission][pnjDatos.pnjNext]["triggers"]["answers"]["X"].ToString());
-						pnjDatos.pnjNext=pnjNextText;
+						pnjNextText = int.Parse(pnjDatos[mission][pnjNextText]["triggers"]["answers"]["X"].ToString());
+						//pnjDatos.pnjNext=pnjNextText;
 					}
-					else if(int.Parse(pnjDatos.dataFile[pnjDatos.mission][pnjDatos.pnjNext]["triggers"]["answers"]["Y"].ToString())>=0)
+					else if(int.Parse(pnjDatos[mission][pnjNextText]["triggers"]["answers"]["Y"].ToString())>=0)
 					{
-						pnjNextText = int.Parse(pnjDatos.dataFile[pnjDatos.mission][pnjDatos.pnjNext]["triggers"]["answers"]["Y"].ToString());
-						pnjDatos.pnjNext=pnjNextText;
+						pnjNextText = int.Parse(pnjDatos[mission][pnjNextText]["triggers"]["answers"]["Y"].ToString());
+						//pnjDatos.pnjNext=pnjNextText;
 					}
 				}
 			}
@@ -91,10 +98,9 @@ public class pnjTalk : MonoBehaviour {
 				return;
 			}
 			if(printText)
-				if(pnjDatos)
+				if(pnjDatos!=null)
 				{
-					GUI.Box (new Rect (screenPos.x, Screen.height - screenPos.y - 100, 250, 100), pnjDatos.dataFile[pnjDatos.mission][pnjDatos.pnjNext]["text"].ToString());
-
+					GUI.Box (new Rect (screenPos.x, Screen.height - screenPos.y - 100, 250, 100), pnjDatos[mission][pnjNextText]["text"].ToString());
 				}
 				else
 					GUI.Box (new Rect (screenPos.x, Screen.height - screenPos.y - 100, 100, 100), "Oye, hijodeputa");
