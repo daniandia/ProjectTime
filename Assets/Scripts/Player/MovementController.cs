@@ -5,14 +5,21 @@ public class MovementController : MonoBehaviour {
 	
 	public float speed = 3.0F;
 	public float rotateSpeed = 3.0F;
-
-	public GameObject bulletType;
+	
+	private Weapon selectedWeapon;
+	private int    selectedWeaponId = 0;
+	public 	Weapon[] weapons;
 
 	private EnemyController enemyController;
 	private GameObject 		aimedEnemy;
 	public bool 			nextEnemySelected = false;
 
 	public float seeDistance = 500f;
+
+	void Start(){
+		selectedWeaponId = 0;
+		selectedWeapon 	 = weapons[selectedWeaponId];
+	}
 
 	public enum CameraMode{
 		free,
@@ -25,7 +32,9 @@ public class MovementController : MonoBehaviour {
 	void Update() {
 		SetMovement();
 		SetCamera();
-		if ( Input.GetButtonDown("Fire1") ) Shot();
+		if ( Input.GetButton("Fire1") ) Shot();
+		if(Input.GetKeyDown(KeyCode.UpArrow)) 	NextWeapon();
+		if(Input.GetKeyDown(KeyCode.DownArrow)) PrevWeapon();
 	}
 
 	// Camera setting
@@ -74,9 +83,32 @@ public class MovementController : MonoBehaviour {
 		controller.SimpleMove(forward * curSpeed + left* sideSpeed);
 	}
 
+	/// <summary>
+	/// WEAPONS
+	/// </summary>
 	// shots a bullet
+
 	void Shot(){
-		Instantiate(bulletType, transform.position, transform.rotation );
+		selectedWeapon.Shot(transform);
+		//Instantiate(bulletType, transform.position, transform.rotation );
+	}
+
+	void NextWeapon(){
+		//Destroy(selectedWeapon.gameObject,true);
+		selectedWeaponId++;
+		if(selectedWeaponId>=weapons.Length) selectedWeaponId = 0;
+		//selectedWeapon = Instantiate(weapons[selectedWeaponId]) as Weapon;
+		selectedWeapon = weapons[selectedWeaponId];
+		print ("SELECTED WEAPON : "+selectedWeapon.name);
+	}
+	
+	void PrevWeapon(){
+		//Destroy(selectedWeapon.gameObject,true);
+		selectedWeaponId--;
+		if(selectedWeaponId<0) selectedWeaponId = weapons.Length-1;
+		//selectedWeapon = Instantiate(weapons[selectedWeaponId]) as Weapon;
+		selectedWeapon = weapons[selectedWeaponId];
+		print ("SELECTED WEAPON : "+selectedWeapon.name);
 	}
 
 	// Entro e triggers
