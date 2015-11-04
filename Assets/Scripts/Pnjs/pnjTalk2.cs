@@ -2,8 +2,8 @@
 using System.Collections;
 using LitJson;
 
-public class pnjTalk : MonoBehaviour {
-
+public class pnjTalk2 : MonoBehaviour {
+	
 	private bool printOnGUI;
 	private bool printText;
 	private Camera newCamera;
@@ -14,8 +14,10 @@ public class pnjTalk : MonoBehaviour {
 	public string mission;
 	public GameObject MissionHelper_Aux;
 
-	public string texto;
-
+	public string text;
+	public int textId;
+	public int nextTextId;
+	
 	// Use this for initialization
 	void Start () {
 		//pnjNextText = pnjDatos.pnjNext;
@@ -30,6 +32,8 @@ public class pnjTalk : MonoBehaviour {
 		}
 		//if(pnjDatos)
 		//	Debug.Log (pnjDatos.dataFile.ToString ());
+
+		nextTextId = -1;
 	}
 	
 	// Update is called once per frame
@@ -39,54 +43,29 @@ public class pnjTalk : MonoBehaviour {
 			if (!printText)
 			{
 				printText = true;
-
+				textId=-1;
 				//dame el texto
+				if(nextTextId==-1)
+					MissionHelper_Aux.GetComponent<LoadLevelDialog> ().getText(mission);
+				else
+				{
+					MissionHelper_Aux.GetComponent<LoadLevelDialog> ().getText(mission,nextTextId);
+				}
 			}
 			else
 			{
-				if(int.Parse(pnjDatos[mission][pnjNextText]["triggers"]["next"].ToString())>=0)
-				{
-					pnjNextText = int.Parse(pnjDatos[mission][pnjNextText]["triggers"]["next"].ToString());
-					//pnjDatos.pnjNext=pnjNextText;
-				}
-				else if(int.Parse(pnjDatos[mission][pnjNextText]["triggers"]["callback"].ToString())>=0)
-				{
-					Debug.Log("Callback");
-				}
-				else
-				{
-					if(int.Parse(pnjDatos[mission][pnjNextText]["triggers"]["answers"]["A"].ToString())>=0)
-					{				
-						pnjNextText = int.Parse(pnjDatos[mission][pnjNextText]["triggers"]["answers"]["A"].ToString());
-						//pnjDatos.pnjNext=pnjNextText;
-					}
-					else if(int.Parse(pnjDatos[mission][pnjNextText]["triggers"]["answers"]["B"].ToString())>=0)
-					{
-						pnjNextText = int.Parse(pnjDatos[mission][pnjNextText]["triggers"]["answers"]["B"].ToString());
-						//pnjDatos.pnjNext=pnjNextText;
-					}
-					else if(int.Parse(pnjDatos[mission][pnjNextText]["triggers"]["answers"]["X"].ToString())>=0)
-					{
-						pnjNextText = int.Parse(pnjDatos[mission][pnjNextText]["triggers"]["answers"]["X"].ToString());
-						//pnjDatos.pnjNext=pnjNextText;
-					}
-					else if(int.Parse(pnjDatos[mission][pnjNextText]["triggers"]["answers"]["Y"].ToString())>=0)
-					{
-						pnjNextText = int.Parse(pnjDatos[mission][pnjNextText]["triggers"]["answers"]["Y"].ToString());
-						//pnjDatos.pnjNext=pnjNextText;
-					}
-				}
+
 			}
 		}
 	}
-
+	
 	void OnTriggerStay(Collider other) {
 		if (other.name == "player" && !printOnGUI) {
 			//print ("ENTRAR PLAYER");
 			printOnGUI = true;
 		}
 	}
-
+	
 	void OnTriggerExit(Collider other) {
 		if (other.name == "player" && printOnGUI) {
 			//print ("SALIR PLAYER");
@@ -95,22 +74,59 @@ public class pnjTalk : MonoBehaviour {
 		}
 	}
 
+	public void setText(int newText){
+		textId = newText;
+		setNextText();
+	}
+
+	void setNextText()
+	{
+		if(int.Parse(pnjDatos[mission][textId]["triggers"]["next"].ToString())>=0)
+		{
+			nextTextId = int.Parse(pnjDatos[textId][pnjNextText]["triggers"]["next"].ToString());
+		}
+		else if(int.Parse(pnjDatos[mission][textId]["triggers"]["callback"].ToString())>=0)
+		{
+			Debug.Log("Callback");
+		}
+		else
+		{
+			if(int.Parse(pnjDatos[mission][textId]["triggers"]["answers"]["A"].ToString())>=0)
+			{				
+				nextTextId = int.Parse(pnjDatos[mission][textId]["triggers"]["answers"]["A"].ToString());
+			}
+			else if(int.Parse(pnjDatos[mission][textId]["triggers"]["answers"]["B"].ToString())>=0)
+			{
+				nextTextId = int.Parse(pnjDatos[mission][textId]["triggers"]["answers"]["B"].ToString());
+			}
+			else if(int.Parse(pnjDatos[mission][textId]["triggers"]["answers"]["X"].ToString())>=0)
+			{
+				nextTextId = int.Parse(pnjDatos[mission][textId]["triggers"]["answers"]["X"].ToString());
+			}
+			else if(int.Parse(pnjDatos[mission][textId]["triggers"]["answers"]["Y"].ToString())>=0)
+			{
+				nextTextId = int.Parse(pnjDatos[mission][textId]["triggers"]["answers"]["Y"].ToString());
+			}
+		}
+	}
+	
 	void OnGUI() {
 		if (printOnGUI) {
 			if (!aButton) {
 				Debug.LogError("Assign a Texture in the inspector.");
 				return;
 			}
-			if(printText)
-				if(pnjDatos!=null)
+			if(printText){
+				if(textId!=-1)
 				{
-					GUI.Box (new Rect (screenPos.x, Screen.height - screenPos.y - 100, 250, 100), pnjDatos[mission][pnjNextText]["text"].ToString());
+					GUI.Box (new Rect (screenPos.x, Screen.height - screenPos.y - 100, 250, 100), pnjDatos[mission][textId]["text"].ToString());
 				}
 				else
 					GUI.Box (new Rect (screenPos.x, Screen.height - screenPos.y - 100, 100, 100), "Oye, hijodeputa");
+			}
 			else
 				GUI.DrawTexture(new Rect(screenPos.x, Screen.height - screenPos.y - 100, 100, 100), aButton, ScaleMode.ScaleAndCrop, true, 0.0F);
-
+			
 		}
 	}
 }
