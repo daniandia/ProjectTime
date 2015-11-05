@@ -12,11 +12,18 @@ public class LoadLevelDialog : MonoBehaviour {
 	void Start () {
 		next = -1;
 		dataFile = loadJSON.Instance.loadFile (level);
+		GameObject player = GameObject.Find ("player");
+		player.GetComponent<playerTalk> ().missionData=dataFile;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 	
+	}
+
+	public void setNext(int next)
+	{
+
 	}
 
 	public void getText(string mission){
@@ -31,9 +38,15 @@ public class LoadLevelDialog : MonoBehaviour {
 	public void getText(string mission, int textId){
 		GameObject subject;
 		string who;
-		who=dataFile[mission][0]["id_pnj"].ToString();
+		who=dataFile[mission][textId]["id_pnj"].ToString();
 		subject = GameObject.Find (who);
 		//subject.GetComponent<pnjTalk2>().setText(dataFile[mission][0]["text"].ToString());
-		subject.GetComponent<pnjTalk2>().setText(textId);
+		if (who == "player") {
+			Debug.Log ("HABLA PLAYER:"+textId);
+			subject.GetComponent<playerTalk> ().setText (textId);
+		} else {
+			Debug.Log ("HABLA PNJ");
+			subject.GetComponent<pnjTalk2> ().setText (textId);
+		}
 	} 
 }

@@ -29,6 +29,7 @@ public class pnjTalk2 : MonoBehaviour {
 			Debug.Log("cargo");
 			MissionHelper_Aux = GameObject.Find ("MissionHelper");
 			pnjDatos = MissionHelper_Aux.GetComponent<LoadLevelDialog> ().dataFile;
+
 		}
 		//if(pnjDatos)
 		//	Debug.Log (pnjDatos.dataFile.ToString ());
@@ -44,17 +45,20 @@ public class pnjTalk2 : MonoBehaviour {
 			{
 				printText = true;
 				textId=-1;
+				MissionHelper_Aux.GetComponent<LoadLevelDialog> ().getText(mission);
+				GameObject player = GameObject.Find ("player");
+				player.GetComponent<playerTalk> ().mission=mission;
 				//dame el texto
-				if(nextTextId==-1)
+				/*if(nextTextId==-1)
 					MissionHelper_Aux.GetComponent<LoadLevelDialog> ().getText(mission);
 				else
 				{
 					MissionHelper_Aux.GetComponent<LoadLevelDialog> ().getText(mission,nextTextId);
-				}
+				}*/
 			}
 			else
 			{
-
+				MissionHelper_Aux.GetComponent<LoadLevelDialog> ().getText(mission,nextTextId);
 			}
 		}
 	}
