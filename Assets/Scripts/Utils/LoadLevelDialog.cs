@@ -7,13 +7,14 @@ public class LoadLevelDialog : MonoBehaviour {
 	public string level;
 	public JsonData dataFile;
 	public int next;
+	public int current;
 
 	// Use this for initialization
 	void Start () {
 		next = -1;
 		dataFile = loadJSON.Instance.loadFile (level);
-		GameObject player = GameObject.Find ("player");
-		player.GetComponent<playerTalk> ().missionData=dataFile;
+		//GameObject player = GameObject.Find ("player");
+		//player.GetComponent<playerTalk> ().missionData=dataFile;
 	}
 	
 	// Update is called once per frame
@@ -48,5 +49,10 @@ public class LoadLevelDialog : MonoBehaviour {
 			Debug.Log ("HABLA PNJ");
 			subject.GetComponent<pnjTalk2> ().setText (textId);
 		}
-	} 
+	}
+
+	public void getNextText(string mission)
+	{
+
+	}
 }
