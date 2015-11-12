@@ -51,8 +51,32 @@ public class LoadLevelDialog : MonoBehaviour {
 		}
 	}
 
-	public void getNextText(string mission)
+	public void getNextText(string mission, int textId, out string textString, out int textInt)
 	{
-
+		textInt = -1000;
+		textString="ERROR";
+		if (textId == -1) {
+			textId = 0;
+			textInt = 0;
+			textString=dataFile[mission][textId]["text"].ToString ();
+		} else {
+			if (int.Parse (dataFile [mission] [textId] ["triggers"] ["next"].ToString ()) >= 0) {
+				textInt = int.Parse (dataFile [textId] ["triggers"] ["next"].ToString ());
+				textString=dataFile[mission][textId]["text"].ToString ();
+			} else if (int.Parse (dataFile [mission] [textId] ["triggers"] ["callback"].ToString ()) >= 0) {
+				Debug.Log ("Callback");
+			} else {
+				if (int.Parse (dataFile [mission] [textId] ["triggers"] ["answers"] ["A"].ToString ()) >= 0) {				
+					textInt = int.Parse (dataFile [mission] [textId] ["triggers"] ["answers"] ["A"].ToString ());
+					textString=dataFile[mission][textId]["text"].ToString ();
+				} else if (int.Parse (dataFile [mission] [textId] ["triggers"] ["answers"] ["B"].ToString ()) >= 0) {
+					textInt = int.Parse (dataFile [mission] [textId] ["triggers"] ["answers"] ["B"].ToString ());
+				} else if (int.Parse (dataFile [mission] [textId] ["triggers"] ["answers"] ["X"].ToString ()) >= 0) {
+					textInt = int.Parse (dataFile [mission] [textId] ["triggers"] ["answers"] ["X"].ToString ());
+				} else if (int.Parse (dataFile [mission] [textId] ["triggers"] ["answers"] ["Y"].ToString ()) >= 0) {
+					textInt = int.Parse (dataFile [mission] [textId] ["triggers"] ["answers"] ["Y"].ToString ());
+				}
+			}
+		}
 	}
 }

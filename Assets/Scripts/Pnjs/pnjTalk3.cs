@@ -13,6 +13,7 @@ public class pnjTalk3 : MonoBehaviour {
 	public Texture aButton;
 
 	public string textToPrint;
+	public int textId;
 
 	// Use this for initialization
 	void Start () {
@@ -24,6 +25,8 @@ public class pnjTalk3 : MonoBehaviour {
 			Debug.Log("cargo");
 			MissionHelper_Aux = GameObject.Find ("MissionHelper");			
 		}
+		textId = -1;
+		textToPrint = "";
 	}
 	
 	// Update is called once per frame
@@ -33,12 +36,10 @@ public class pnjTalk3 : MonoBehaviour {
 			if (!printText)
 			{
 				printText = true;
-				if(MissionHelper_Aux)
-				{
-					/*ESTOY AQUI!!!!*/
-					/*HAY QUE PASARLE MISION E ID*/
-					MissionHelper_Aux.GetComponent<LoadLevelDialog> ().getNextText(mission);
-				}
+			}
+			if(MissionHelper_Aux)
+			{
+				MissionHelper_Aux.GetComponent<LoadLevelDialog> ().getNextText(mission,textId,out textToPrint,out textId);
 			}
 		}
 	}
@@ -54,6 +55,8 @@ public class pnjTalk3 : MonoBehaviour {
 			printOnGUI = false;
 			printText = false;
 		}
+		textId = -1;
+		textToPrint = "";
 	}
 
 	void OnGUI() {
